@@ -1,10 +1,7 @@
-version: "2"
-sql:
-  - engine: "postgresql"
-    schema: ".db/migration/"
-    queries: ".bd/query/"
-    path: ".db/sqlc/"
-    gen:
-      go:
-        package: "simple-bank"
-        out: "simple-bank"
+version: 1
+packages:
+  - path: "db/sqlc"
+    name: "simple-bank"
+    engine: "mysql"
+    schema: "db/migration/"
+    queries: "db/query/"

@@ -2,17 +2,16 @@ package db
 
 import "context"
 
-const createAccount = `-- name: CreateAccount :one
+const createAccount = `-- name: CreateAccount :execresult
 INSERT INTO accounts(
     owner,
     balance,
     currency
-) VALUES ($1, $2, $3) RETURNING *;
-`
+) VALUES (?, ?, ?);`
 
 type CreateAccountParams struct {
 	Owner    string `json:"owner"`
-	Balance  string `json:"balance"`
+	Balance  int64  `json:"balance"`
 	Currency string `json:"currency"`
 }
 
@@ -117,4 +116,64 @@ DELETE FROM accounts WHERE id = $1;`
 func (q *Queries) DeleteAccount(ctx context.Context, id int64) error {
 	_, err := q.db.ExecContext(ctx, getAccount, id)
 	return err
+}
+
+
+// test
+
+package db
+
+import (
+	"database/sql"
+	_ "github.com/go-sql-driver/mysql"
+	"log"
+	"os"
+	"testing"
+)
+
+var testQueries *Queries
+
+const (
+	dbDriver = "mysql"
+	dbSource = "root:password@localhost/simple-bank"
+)
+
+func TestMain(m *testing.M) {
+	conn, err := sql.Open(dbDriver, dbSource)
+
+	if err != nil {
+		log.Fatal("cannot connect", err)
+	}
+	testQueries = New(conn)
+
+	os.Exit(m.Run())
+}
+
+
+//
+package db
+
+import (
+	"context"
+	"github.com/stretchr/testify/require"
+	"testing"
+)
+
+func TestCreateAccount(t *testing.T) {
+	arg := CreateAccountParams{
+		Owner:    "Just in mind",
+		Balance:  100,
+		Currency: "IDK",
+	}
+	account, err := testQueries.CreateAccount(context.Background(), arg)
+	require.NoError(t, err)
+	require.NotEmpty(t, account)
+
+	require.Equal(t, arg.Owner, account.Owner)
+	require.Equal(t, arg.Balance, account.Balance)
+	require.Equal(t, arg.Currency, account.Currency)
+
+	require.NotZero(t, account.ID)
+	require.NotZero(t, account.CreatedAt)
+
 }
