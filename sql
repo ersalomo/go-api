@@ -177,3 +177,4 @@ func TestCreateAccount(t *testing.T) {
 	require.NotZero(t, account.CreatedAt)
 
 }
+	#migrate -path db/migration -database "postgres://root:secret@localhost:5431/simple_bank?sslmode=disable" -verbose down

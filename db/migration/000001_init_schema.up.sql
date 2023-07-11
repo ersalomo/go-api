@@ -1,5 +1,5 @@
 CREATE TABLE `accounts` (
-                            `id` bigint PRIMARY KEY,
+                            `id` bigint NOT NULL PRIMARY KEY AUTO_INCREMENT,
                             `owner` varchar(255) NOT NULL,
                             `balance` int NOT NULL,
                             `currency` varchar(5) NOT NULL,

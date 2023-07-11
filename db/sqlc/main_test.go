@@ -3,27 +3,17 @@ package db
 import (
 	"database/sql"
 	"fmt"
+	_ "github.com/go-sql-driver/mysql"
 	"log"
 	"os"
+	"simple-bank/utils"
 	"testing"
 )
 
 var testQueries *Queries
 
-const (
-	dbUser         = "root"
-	dbPassword     = ""
-	database       = "simple-bank"
-	dbRootPassword = ""
-)
-
-const (
-	dbDriver = "mysql"
-	dbSource = "root@localhost/simple-bank"
-)
-
 func TestMain(m *testing.M) {
-	dbUri := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=true", dbUser, dbPassword, "localhost", "3306", database)
+	dbDriver, dbUri := utils.GetDbUrl()
 	fmt.Println(dbUri)
 	conn, err := sql.Open(dbDriver, dbUri)
 
