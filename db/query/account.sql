@@ -7,7 +7,7 @@ SELECT * FROM accounts WHERE id = ?;
 -- name: ListAccounts :many
 SELECT * FROM accounts ORDER BY id LIMIT ?;
 
--- name: UpdateAccount :execresult
+-- name: UpdateAccount :exec
 UPDATE accounts SET balance = ? WHERE id = ?;
 
 -- name: DeleteAccount :exec

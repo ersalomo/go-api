@@ -1,7 +1,9 @@
-version: 1
-packages:
-  - path: "db/sqlc"
-    name: "simple-bank"
-    engine: "mysql"
-    schema: "db/migration/"
-    queries: "db/query/"
+version: "2"
+sql:
+    - schema: "db/migration"
+      queries: "db/query"
+      engine: "mysql"
+      gen:
+          go:
+              package: "db"
+              out: "/db/sqlc"

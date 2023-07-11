@@ -2,7 +2,7 @@ CREATE TABLE `accounts` (
                             `id` bigint PRIMARY KEY,
                             `owner` varchar(255) NOT NULL,
                             `balance` int NOT NULL,
-                            `currency` int NOT NULL,
+                            `currency` varchar(5) NOT NULL,
                             `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
                             `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
