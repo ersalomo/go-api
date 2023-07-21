@@ -16,7 +16,7 @@ INSERT INTO accounts(owner, balance,currency) VALUES (?, ?, ?)
 
 type CreateAccountParams struct {
 	Owner    string
-	Balance  int32
+	Balance  int64
 	Currency string
 }
 
@@ -94,7 +94,6 @@ type UpdateAccountParams struct {
 	ID      int64
 }
 
-func (q *Queries) UpdateAccount(ctx context.Context, arg UpdateAccountParams) error {
-	_, err := q.db.ExecContext(ctx, updateAccount, arg.Balance, arg.ID)
-	return err
+func (q *Queries) UpdateAccount(ctx context.Context, arg UpdateAccountParams) (sql.Result, error) {
+	return q.db.ExecContext(ctx, updateAccount, arg.Balance, arg.ID)
 }
